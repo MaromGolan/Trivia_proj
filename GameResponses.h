@@ -1,9 +1,9 @@
 #pragma once
-#include "RoomData.h"
+#include "GameRoomData.h"
 
 
-struct GetRoomStateRespone
+struct GetRoomStatus
 {
-    RoomData _roomData;
+    GameRoomData _roomData;
     std::set<std::string> _users;
 };
