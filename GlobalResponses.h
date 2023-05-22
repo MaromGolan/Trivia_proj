@@ -2,7 +2,7 @@
 
 struct GoodResponse
 {
-	std::string _msg;	//SETTLE ON THE MESSAGE CONTENT;
+	std::string _ok = "ok";
 };
 
 struct BadResponse
