@@ -17,7 +17,7 @@ JsonBase::Buffer JsonResponsePacketSerializer::serializeLoginResponse(const Good
 
 
 	//going thru all of the bytes needed;
-	for (auto& bit : response._msg)
+	for (auto& bit : response._ok)
 	{
 		buffer.push_back(bit);
 	}
@@ -57,8 +57,8 @@ JsonBase::Buffer JsonResponsePacketSerializer::serializeResponse(const GetRoomsR
 	{
 		stream << "{" << Pair("name", room.first) << ", " << Pair("admin", room.second.getData()._admin) << ", "
 			   << Pair("state", room.second.isActive()) << ", " << Pair("players_count", room.second.getAllUsers().size()) << ", "
-			   << Pair("max_players", room.second.getData()._maxPlayers) << ", " << Pair("questions_count", room.second.getData()._questionsCount) << ", "
-			   << Pair("question_timeout", room.second.getData()._questionTimeout) << " }, ";
+			   << Pair("max_players", room.second.getData()._maxPlayerCount) << ", " << Pair("questions_count", room.second.getData()._questionCount) << ", "
+			   << Pair("question_timeout", room.second.getData()._questionTime) << " }, ";
 	}
 
 
