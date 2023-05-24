@@ -1,0 +1,3 @@
+NOTE FROM ARIK
+
+the bonus of singleton, and the bonus of mongo database, will be added to the old files of 1.0.2 where they need to be placed.
