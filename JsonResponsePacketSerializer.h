@@ -21,12 +21,7 @@ public:
 	static JsonBase::Buffer serializeLoginResponse(const GoodResponse& response);
 	static JsonBase::Buffer serializeErrorResponse(const BadResponse& response);
 
-
-	//room and statistical fields;
-	static JsonBase::Buffer serializeResponse(const GetRoomsResponse& response);
-	static JsonBase::Buffer serializeResponse(const GetPlayersInRoomResponse& response);
-	static JsonBase::Buffer serializeResponse(const GetRoomStatus& response);
-
+	//preparing for 2.0.0:
 	static JsonBase::Buffer serializeHighScoreResponse(const getHighScore& response);
 	static JsonBase::Buffer serializePersonalStatsResponse(const getPersonalStats& response);
 
