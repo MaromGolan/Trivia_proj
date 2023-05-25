@@ -34,37 +34,4 @@ private:
 	static JsonBase::Buffer formatMessage(const std::string& data);
 
 
-
-	template<class T1, class T2>
-
-	inline static std::string Pair(const T1& key, const T2& val);
-
-
-
-	template<class T>
-
-	inline static std::string Pair(const T& key, const bool val);
-
 };
-
-
-
-template<class T1, class T2>
-
-inline std::string JsonResponsePacketSerializer::Pair(const T1& key, const T2& val)
-{
-	std::stringstream stream;
-	stream << "\"" << key << "\" : \"" << val << "\"";
-
-	return stream.str();
-}
-
-
-
-template<class T>
-
-inline static std::string JsonResponsePacketSerializer::Pair(const T& key, const bool val)
-{
-	return makeJsonPair(key, val ? "True" : "False");
-}
-
