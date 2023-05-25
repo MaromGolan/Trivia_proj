@@ -1,13 +1,13 @@
 #include "JsonResponsePacketSerializer.h"
 
 #include "GameRoom.h"
-#include "GameRoomData.h"
+
+#include "Structs.h"
 
 #include "Exception.h"
 
 #include <sstream>
 #include <iostream>
-
 
 
 //login message serializer;
