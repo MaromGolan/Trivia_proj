@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "Structs.h"
-
 #include "jsonBase.h"
 
 using namespace JsonBase;
@@ -19,17 +19,12 @@ public:
 	static LoginRequest deserializeLoginRequest(const Buffer& buffer);
 	static SignupRequest deserializeSignupRequest(const Buffer& buffer);
 
-	static LeaveRoom deserializeLeaveRoomReq(const Buffer& buffer);
 	static GetPlayersInRoom deserializeGetPlayersRequest(const Buffer& buffer);
 	static CreateRoom deserializeCreateRoomRequest(const Buffer& buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(const Buffer& buffer);
 
-	static RoomStatistics deserializeGetPersonalStats(const Buffer & buffer);
-	static LogoutRequest deserializeLogoutReq(const Buffer & buffer);
 
-	static CloseRoom deserializeCloseRoomReq(const Buffer & buffer);
-	static StartRoom deserializeStartRoomReq(const Buffer& buffer);
-	static RoomStatusRequest deserializeRoomStateReq(const Buffer& buffer);
+	static std::string returnField(const std::string field, const Buffer& buffer);
 
 
 
