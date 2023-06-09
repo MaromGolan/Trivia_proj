@@ -1,0 +1,160 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+namespace trivia
+{//TO ADD A START BUTTON TO FOR THE ADMIN THAT MOVES HIM TO THIS PAGE, AND A PROMPT THAT WHEN PRESSING YES MOVES THE USER TO THIS PAGE
+    public partial class Rooms : Form
+    {
+        public int numQuestion { get; set; }
+        public List<Question> questions { get; set; }
+        public Rooms()
+        {
+            InitializeComponent();
+            this.questions = new List<Question>();
+
+        }
+
+        private void Rooms_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        public async Task<string> GetChatCompletion(string apiKey, string query)//i got chatgpt to give me a random question each time
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("https://api.openai.com/");
+                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+                client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+
+                string requestBody = $@"{{
+            ""model"": ""gpt-3.5-turbo"",
+            ""query"": ""{query}"",
+            ""max_tokens"": 100
+        }}";
+
+                HttpResponseMessage response = await client.PostAsync("v1/chat/completions", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                return responseBody;
+            }
+        }
+        public async Task QuestionSetter()
+        {
+            string key = "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";
+            for (int j = 0; j < 10; j++)
+            {
+                string question = String.Empty;
+                string correct = String.Empty;
+
+                string response = await GetChatCompletion(key, "please generate a random question followed up by 4 answers(one of them being the correct answer and the rest being wrong)");
+                string[] sorted = response.Split('\n');
+                List<string> answers = new List<string>();
+                for (int i = 0; i < sorted.Length; i++)
+                {
+                    if (sorted[i].Contains("(Correct Answer)"))
+                    {
+                        sorted[i].Replace("(Correct Answer)", "");
+                        correct = sorted[i];
+                    }
+                    if(i == 0)
+                    {
+                        question = sorted[i];
+                    }
+                    else
+                    {
+                        answers.Add(sorted[i]);
+                    }
+                }
+                Question q = new Question(question,answers,correct);
+                questions.Add(q);
+            }
+        }
+        private void DisplayQuestion()
+        {
+            if (numQuestion < 10)
+            {
+                // Update the question label
+                Question currentQuestion = questions[numQuestion];
+                questionLabel.Text = currentQuestion.Text;
+
+                // Clear any previous answer options
+                answerOptionsPanel.Controls.Clear();
+
+                // Create and add radio buttons for each answer option
+                foreach (string option in currentQuestion.AnswerOptions)
+                {
+                    RadioButton radioButton = new RadioButton();
+                    radioButton.Text = option;
+                    radioButton.AutoSize = true;
+                    radioButton.Font = new Font("Arial", 12);
+                    answerOptionsPanel.Controls.Add(radioButton);
+                }
+
+                // Enable the next button
+                nextButton.Enabled = true;
+            }
+            else
+            {
+                // No more questions, game over
+                MessageBox.Show("Game Over!");
+                Close();
+            }
+        }
+        private void nextButton_Click(object sender, EventArgs e)
+        {
+            // Check the selected answer
+            Question currentQuestion = questions[numQuestion];
+            RadioButton selectedRadioButton = answerOptionsPanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
+
+            if (selectedRadioButton != null)
+            {
+                string selectedAnswer = selectedRadioButton.Text;
+                if (selectedAnswer == currentQuestion.CorrectAnswer)
+                {
+                    // Correct answer
+                    MessageBox.Show("Correct!");
+                }
+                else
+                {
+                    // Incorrect answer
+                    MessageBox.Show($"Incorrect! The correct answer is: {currentQuestion.CorrectAnswer}");
+                }
+            }
+            else
+            {
+                // No answer selected
+                MessageBox.Show("Please select an answer!");
+                return;
+            }
+
+            // Move to the next question
+            numQuestion++;
+            DisplayQuestion();
+        }
+        private void exit_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Leaving room");
+            triviaCreate t = new triviaCreate();
+            t.Show();
+        }
+    }
+    public class Question
+    {
+        public string Text { get; }
+        public List<string> AnswerOptions { get; }
+        public string CorrectAnswer { get; }
+
+        public Question(string text, List<string> answerOptions, string correctAnswer)
+        {
+            Text = text;
+            AnswerOptions = answerOptions;
+            CorrectAnswer = correctAnswer;
+        }
+    }
+}

@@ -1,0 +1,8 @@
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.Properties.Resources.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.csproj.GenerateResource.cache
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.createRoom.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.joinRoom.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.login.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.signup.resources
