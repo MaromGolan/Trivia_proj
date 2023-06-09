@@ -45,19 +45,23 @@
             // 
             // answerOptionsPanel
             // 
+            this.answerOptionsPanel.Enabled = false;
             this.answerOptionsPanel.Location = new System.Drawing.Point(287, 201);
             this.answerOptionsPanel.Name = "answerOptionsPanel";
             this.answerOptionsPanel.Size = new System.Drawing.Size(200, 100);
             this.answerOptionsPanel.TabIndex = 1;
+            this.answerOptionsPanel.Visible = false;
             // 
             // nextButton
             // 
+            this.nextButton.Enabled = false;
             this.nextButton.Location = new System.Drawing.Point(638, 384);
             this.nextButton.Name = "nextButton";
             this.nextButton.Size = new System.Drawing.Size(119, 38);
             this.nextButton.TabIndex = 2;
             this.nextButton.Text = "Next";
             this.nextButton.UseVisualStyleBackColor = true;
+            this.nextButton.Visible = false;
             // 
             // exit
             // 

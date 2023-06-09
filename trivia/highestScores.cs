@@ -12,15 +12,18 @@ namespace trivia
 {
     public partial class highestScores : Form
     {
-        private string lastPage { set; get; }
-        public highestScores(string lastPage)
+       
+        public highestScores()
         {
             InitializeComponent();
-            this.lastPage = lastPage;   
         }
         private void highestScores_Load(object sender, EventArgs e)
         {
-
+            top3.Text = "GetFromServer";
+        }
+        private void exit_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

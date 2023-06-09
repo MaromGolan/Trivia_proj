@@ -12,6 +12,7 @@ namespace trivia
         public int TimePerQuestion { get; set; }
         public int NumberOfPlayers { get; set; }
         public user[] ingame;
+        public bool started;
 
         public room(string n, int t, int num, string u, List<user> users)
         {
@@ -27,6 +28,7 @@ namespace trivia
                     break;
                 }
             }
+            started = false;
         }
         public void AddUser(user u)
         {

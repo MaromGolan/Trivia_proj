@@ -28,22 +28,33 @@ namespace trivia
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.top3 = new System.Windows.Forms.TextBox();
+            this.exit = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // textBox1
+            // top3
             // 
-            this.textBox1.Location = new System.Drawing.Point(299, 192);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 26);
-            this.textBox1.TabIndex = 1;
+            this.top3.Location = new System.Drawing.Point(338, 192);
+            this.top3.Name = "top3";
+            this.top3.Size = new System.Drawing.Size(100, 26);
+            this.top3.TabIndex = 1;
+            // 
+            // exit
+            // 
+            this.exit.Location = new System.Drawing.Point(13, 402);
+            this.exit.Name = "exit";
+            this.exit.Size = new System.Drawing.Size(149, 36);
+            this.exit.TabIndex = 2;
+            this.exit.Text = "Exit";
+            this.exit.UseVisualStyleBackColor = true;
             // 
             // highestScores
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.exit);
+            this.Controls.Add(this.top3);
             this.Name = "highestScores";
             this.Text = "highestScores";
             this.Load += new System.EventHandler(this.highestScores_Load);
@@ -53,6 +64,7 @@ namespace trivia
         }
 
         #endregion
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox top3;
+        private System.Windows.Forms.Button exit;
     }
 }

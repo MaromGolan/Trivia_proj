@@ -55,7 +55,11 @@ namespace trivia
 
         private void stats_Load(object sender, EventArgs e)
         {
-
+            ustats.Text = "stats from server";
+        }
+        private void exit_Click(object sender, EventArgs e)
+        {
+            Close();
         }
     }
 }

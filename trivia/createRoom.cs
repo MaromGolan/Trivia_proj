@@ -28,8 +28,6 @@ namespace trivia
             int NumberOfPlayers = Int32.Parse(num.Text.Trim());
             this.r = new trivia.room(RoomName,TimePerQuestion,NumberOfPlayers,creatorname,users);
             DialogResult = DialogResult.OK;
-            Rooms newroom = new Rooms();
-            newroom.Show();
             Close();
         }
 

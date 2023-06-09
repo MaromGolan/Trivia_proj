@@ -15,8 +15,6 @@ namespace trivia
     {
         private string currentPlayer;
         private string currentRoom;
-
-        private const string DBConnect = "";
         public List<user> users;
         public List<room> rooms;
         public triviaCreate()
@@ -56,6 +54,8 @@ namespace trivia
                 rooms.Add(createRoomForm.r);
                 currentRoom = roomName;
                 MessageBox.Show($"Room created:\nName: {roomName}\nTime per question: {timePerQuestion} seconds\nNumber of players: {numberOfPlayers}\n\nPlayer: {currentPlayer}");
+                Rooms newroom = new Rooms(createRoomForm.r);
+                newroom.Show();
             }
         }
 
@@ -66,13 +66,22 @@ namespace trivia
             {
                 currentRoom = joinRoom.SelectedRoom;
                 MessageBox.Show($"Joined Room:\nRoom: {currentRoom}\n\nPlayer: {currentPlayer}");
+                foreach(room r in rooms)
+                {
+                    if (String.Equals(r.RoomName, currentRoom))
+                    {
+                        Rooms newroom = new Rooms(r);
+                        break;
+                    }
+                }
+
             }
         }
 
         private void statisticsButton_Click(object sender, EventArgs e)
         {
-            stats statisticsForm = new stats();
-            statisticsForm.ShowDialog();
+            stats ustats = new stats();
+            ustats.Show();
         }
 
         private void exitButton_Click(object sender, EventArgs e)
@@ -87,7 +96,7 @@ namespace trivia
 
         private void top3stats_Click(object sender, EventArgs e)
         {
-            highestScores h = new highestScores("createPage");
+            highestScores h = new highestScores();
             h.Show();
         }
     }

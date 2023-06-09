@@ -6,22 +6,52 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 namespace trivia
 {//TO ADD A START BUTTON TO FOR THE ADMIN THAT MOVES HIM TO THIS PAGE, AND A PROMPT THAT WHEN PRESSING YES MOVES THE USER TO THIS PAGE
     public partial class Rooms : Form
     {
         public int numQuestion { get; set; }
         public List<Question> questions { get; set; }
-        public Rooms()
+        public int time { get; set; }
+        public int max { get; set; }
+        public string name{ get; set; }
+        public string admin { get; set; }
+        public string thisuser { get; set; }
+        static public bool started { get; set; }
+        static public user[] ingame { get; set; }
+        
+
+        public Rooms(room r)
         {
             InitializeComponent();
             this.questions = new List<Question>();
-
+            ingame = r.ingame;
+            this.time = r.TimePerQuestion;
+            this.max = r.NumberOfPlayers;
+            this.name = r.RoomName;
+            this.admin = r.ingame[0].Username;
+            this.thisuser = r.ingame[r.ingame.Length-1].Username;
+            started = false;
         }
 
         private void Rooms_Load(object sender, EventArgs e)
         {
-
+            if (thisuser == admin)
+            {
+                nextButton.Enabled = true;
+                nextButton.Visible = true;
+                nextButton.Text = "Start";
+            }
+            questionLabel.Text = "Welcome To " + name;
+            answerOptionsPanel.Visible = false;
+            while(!started)
+            {
+                //waiting for admin to start
+            }
+            nextButton.Enabled = true;
+            nextButton.Visible = true;
+            DisplayQuestion(sender, e);
         }
 
         public async Task<string> GetChatCompletion(string apiKey, string query)//i got chatgpt to give me a random question each time
@@ -75,29 +105,41 @@ namespace trivia
                 questions.Add(q);
             }
         }
-        private void DisplayQuestion()
+        private void DisplayQuestion(object sender, EventArgs e)
         {
             if (numQuestion < 10)
             {
+                answerOptionsPanel.Visible = true;
                 // Update the question label
-                Question currentQuestion = questions[numQuestion];
-                questionLabel.Text = currentQuestion.Text;
+                DateTime startTime = DateTime.UtcNow;
+                TimeSpan breakDuration = TimeSpan.FromSeconds(this.time);
 
-                // Clear any previous answer options
-                answerOptionsPanel.Controls.Clear();
-
-                // Create and add radio buttons for each answer option
-                foreach (string option in currentQuestion.AnswerOptions)
+                // option 1
+                while (DateTime.UtcNow - startTime < breakDuration)
                 {
-                    RadioButton radioButton = new RadioButton();
-                    radioButton.Text = option;
-                    radioButton.AutoSize = true;
-                    radioButton.Font = new Font("Arial", 12);
-                    answerOptionsPanel.Controls.Add(radioButton);
-                }
+                    // do some work
 
-                // Enable the next button
-                nextButton.Enabled = true;
+                    Question currentQuestion = questions[numQuestion];
+                    questionLabel.Text = currentQuestion.Text;
+
+                    // Clear any previous answer options
+                    answerOptionsPanel.Controls.Clear();
+
+                    // Create and add radio buttons for each answer option
+                    foreach (string option in currentQuestion.AnswerOptions)
+                    {
+                        RadioButton radioButton = new RadioButton();
+                        radioButton.Text = option;
+                        radioButton.AutoSize = true;
+                        radioButton.Font = new Font("Arial", 12);
+                        answerOptionsPanel.Controls.Add(radioButton);
+                    }
+                    // Enable the next button
+                    nextButton.Enabled = true;
+                    nextButton.Visible = true;
+                }
+                MessageBox.Show("times up");
+                nextButton_Click(sender, e); 
             }
             else
             {
@@ -108,40 +150,47 @@ namespace trivia
         }
         private void nextButton_Click(object sender, EventArgs e)
         {
-            // Check the selected answer
-            Question currentQuestion = questions[numQuestion];
-            RadioButton selectedRadioButton = answerOptionsPanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
-
-            if (selectedRadioButton != null)
+            if (String.Equals(nextButton.Text, "next"))
             {
-                string selectedAnswer = selectedRadioButton.Text;
-                if (selectedAnswer == currentQuestion.CorrectAnswer)
+                // Check the selected answer
+                Question currentQuestion = questions[numQuestion];
+                RadioButton selectedRadioButton = answerOptionsPanel.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
+
+                if (selectedRadioButton != null)
                 {
-                    // Correct answer
-                    MessageBox.Show("Correct!");
+                    string selectedAnswer = selectedRadioButton.Text;
+                    if (selectedAnswer == currentQuestion.CorrectAnswer)
+                    {
+                        // Correct answer
+                        MessageBox.Show("Correct!");
+                    }
+                    else
+                    {
+                        // Incorrect answer
+                        MessageBox.Show($"Incorrect! The correct answer is: {currentQuestion.CorrectAnswer}");
+                    }
                 }
                 else
                 {
-                    // Incorrect answer
                     MessageBox.Show($"Incorrect! The correct answer is: {currentQuestion.CorrectAnswer}");
+                    return;
                 }
+
+                // Move to the next question
+                numQuestion++;
+                DisplayQuestion(sender, e);
             }
             else
             {
-                // No answer selected
-                MessageBox.Show("Please select an answer!");
-                return;
+                started = true;
+                nextButton.Text = "next";
+                DisplayQuestion(sender, e);
             }
-
-            // Move to the next question
-            numQuestion++;
-            DisplayQuestion();
         }
         private void exit_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Leaving room");
-            triviaCreate t = new triviaCreate();
-            t.Show();
+            Close();
         }
     }
     public class Question

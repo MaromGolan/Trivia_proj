@@ -101,6 +101,9 @@
     <EmbeddedResource Include="createRoom.resx">
       <DependentUpon>createRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="highestScores.resx">
+      <DependentUpon>highestScores.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="joinRoom.resx">
       <DependentUpon>joinRoom.cs</DependentUpon>
     </EmbeddedResource>

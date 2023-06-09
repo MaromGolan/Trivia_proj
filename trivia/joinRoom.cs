@@ -23,31 +23,43 @@ namespace trivia
 
         private void joinRoom_Load(object sender, EventArgs e)
         {
-
-            
-        }
-
-        private void joinRoomButton_Click(object sender, EventArgs e)
-        {
-            roomslist.DataSource = rooms;
-
-
-            /*if (roomListBox.SelectedItem != null)
+            while (true)
             {
+                DateTime startTime = DateTime.UtcNow;
+                TimeSpan breakDuration = TimeSpan.FromSeconds(3);
 
-                SelectedRoom = roomListBox.SelectedItem.ToString();
+                // option 1
+                while (DateTime.UtcNow - startTime < breakDuration)
+                {
+                    foreach (room r in rooms)
+                    {
+                        RadioButton radioButton = new RadioButton();
+                        radioButton.Text = r.RoomName;
+                        radioButton.AutoSize = true;
+                        radioButton.Font = new Font("Arial", 12);
+                        currrooms.Controls.Add(radioButton);
+                    }
+                }
+                tojoin_Click(sender, e);
+            }
+
+        }
+        private void tojoin_Click(object sender, EventArgs e)
+        {
+            RadioButton selectedRadioButton = currrooms.Controls.OfType<RadioButton>().FirstOrDefault(r => r.Checked);
+
+            if (selectedRadioButton != null)
+            {
+                SelectedRoom = selectedRadioButton.Text;
                 DialogResult = DialogResult.OK;
                 Close();
             }
             else
             {
-                MessageBox.Show("Please select a room to join.");
-            }*/
+                return;
+            }
         }
-
-        private void checkedroomslist_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
+        
 
         private void joinRoom_Load_1(object sender, EventArgs e)
         {
@@ -60,10 +72,5 @@ namespace trivia
 
         }
 
-        private void roomslist_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            roomslist.DataSource = rooms;
-
-        }
     }
 }

@@ -29,20 +29,45 @@ namespace trivia
         /// </summary>
         private void InitializeComponent()
         {
+            this.ustats = new System.Windows.Forms.TextBox();
+            this.exit = new System.Windows.Forms.Button();
             this.SuspendLayout();
+            // 
+            // ustats
+            // 
+            this.ustats.Location = new System.Drawing.Point(482, 238);
+            this.ustats.Name = "ustats";
+            this.ustats.Size = new System.Drawing.Size(148, 26);
+            this.ustats.TabIndex = 0;
+            // 
+            // exit
+            // 
+            this.exit.Location = new System.Drawing.Point(12, 647);
+            this.exit.Name = "exit";
+            this.exit.Size = new System.Drawing.Size(161, 33);
+            this.exit.TabIndex = 1;
+            this.exit.Text = "Exit";
+            this.exit.UseVisualStyleBackColor = true;
             // 
             // stats
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 692);
+            this.Controls.Add(this.exit);
+            this.Controls.Add(this.ustats);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "stats";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.stats_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
+
+        private System.Windows.Forms.TextBox ustats;
+        private System.Windows.Forms.Button exit;
     }
 }
