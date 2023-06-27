@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -45,10 +46,12 @@ namespace trivia
             }
             questionLabel.Text = "Welcome To " + name;
             answerOptionsPanel.Visible = false;
-            while(!started)
+            while (!started)
             {
                 //waiting for admin to start
+                //waiting to get started from the server  
             }
+            //call for question setter and send the request to server
             nextButton.Enabled = true;
             nextButton.Visible = true;
             DisplayQuestion(sender, e);
@@ -56,11 +59,11 @@ namespace trivia
 
         public async Task<string> GetChatCompletion(string apiKey, string query)//i got chatgpt to give me a random question each time
         {
-            using (HttpClient client = new HttpClient())
+            using (HttpClient usersock = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://api.openai.com/");
-                client.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
-                client.DefaultRequestHeaders.Add("Content-Type", "application/json");
+                usersock.BaseAddress = new Uri("https://api.openai.com/");
+                usersock.DefaultRequestHeaders.Add("Authorization", $"Bearer {apiKey}");
+                usersock.DefaultRequestHeaders.Add("Content-Type", "application/json");
 
                 string requestBody = $@"{{
             ""model"": ""gpt-3.5-turbo"",
@@ -68,7 +71,7 @@ namespace trivia
             ""max_tokens"": 100
         }}";
 
-                HttpResponseMessage response = await client.PostAsync("v1/chat/completions", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+                HttpResponseMessage response = await usersock.PostAsync("v1/chat/completions", new StringContent(requestBody, Encoding.UTF8, "application/json"));
                 string responseBody = await response.Content.ReadAsStringAsync();
 
                 return responseBody;
@@ -191,6 +194,16 @@ namespace trivia
         {
             MessageBox.Show("Leaving room");
             Close();
+        }
+
+        private void nextButton_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public class Question

@@ -62,6 +62,7 @@
             this.nextButton.Text = "Next";
             this.nextButton.UseVisualStyleBackColor = true;
             this.nextButton.Visible = false;
+            this.nextButton.Click += new System.EventHandler(this.nextButton_Click_1);
             // 
             // exit
             // 

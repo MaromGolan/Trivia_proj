@@ -46,6 +46,7 @@ namespace trivia
             this.tojoin.TabIndex = 1;
             this.tojoin.Text = "Join";
             this.tojoin.UseVisualStyleBackColor = true;
+            this.tojoin.Click += new System.EventHandler(this.tojoin_Click_1);
             // 
             // joinRoom
             // 

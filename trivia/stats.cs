@@ -61,5 +61,10 @@ namespace trivia
         {
             Close();
         }
+
+        private void ustats_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

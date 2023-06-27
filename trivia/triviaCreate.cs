@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
-
+using System.Net.Sockets;
+using System.Net;
+            
 namespace trivia
 {
     public partial class triviaCreate : Form
@@ -17,13 +19,52 @@ namespace trivia
         private string currentRoom;
         public List<user> users;
         public List<room> rooms;
+        TcpClient usersock;
         public triviaCreate()
         {
             InitializeComponent();
             this.users = new List<user>();
             this.rooms = new List<room>();
             currentPlayer = String.Empty;
+            try
+            {
+                string serverIP = "127.0.0.1"; 
+                int serverPort = 8826;
+
+                usersock = new TcpClient();
+                usersock.Connect(serverIP, serverPort);
+
+                if (usersock.Connected)
+                {
+                    Console.WriteLine("Connected to the server.");
+
+                    NetworkStream stream = usersock.GetStream();
+
+                    // Send data to the server
+                    string message = "Hello, server!";
+                    byte[] data = System.Text.Encoding.ASCII.GetBytes(message);
+                    stream.Write(data, 0, data.Length);
+
+                    // Receive data from the server
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string response = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    Console.WriteLine("Server response: " + response);
+                    MessageBox.Show("Server said: " + response);
+                    //stream.Close();
+                    //usersock.Close();
+                }
+                else
+                {
+                    Console.WriteLine("Failed to connect to the server.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+            }
         }
+    
 
         private void TriviaGameForm_Load(object sender, EventArgs e)
         {
@@ -33,7 +74,7 @@ namespace trivia
         {
             signup signup = new signup(users);
             signup.ShowDialog();
-            currentPlayer = signup.Username;
+            currentPlayer = signup.Username;   
         }
 
         private void loginButton_Click(object sender, EventArgs e)
@@ -99,6 +140,14 @@ namespace trivia
             highestScores h = new highestScores();
             h.Show();
         }
+
+        private void exitButton_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+
+        }
+
+        
     }
 
 }

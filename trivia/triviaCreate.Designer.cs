@@ -47,6 +47,7 @@ namespace trivia
             this.createRoomButton.TabIndex = 0;
             this.createRoomButton.Text = "Create A Room";
             this.createRoomButton.UseVisualStyleBackColor = true;
+            this.createRoomButton.Click += new System.EventHandler(this.createRoomButton_Click);
             // 
             // joinRoomButton
             // 
@@ -57,6 +58,7 @@ namespace trivia
             this.joinRoomButton.TabIndex = 1;
             this.joinRoomButton.Text = "Join A Room";
             this.joinRoomButton.UseVisualStyleBackColor = true;
+            this.joinRoomButton.Click += new System.EventHandler(this.joinRoomButton_Click);
             // 
             // loginButton
             // 
@@ -67,6 +69,7 @@ namespace trivia
             this.loginButton.TabIndex = 2;
             this.loginButton.Text = "Login";
             this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // SignunButton
             // 
@@ -87,6 +90,7 @@ namespace trivia
             this.exitButton.TabIndex = 4;
             this.exitButton.Text = "Exit";
             this.exitButton.UseVisualStyleBackColor = true;
+            this.exitButton.Click += new System.EventHandler(this.exitButton_Click);
             // 
             // statisticsButton
             // 

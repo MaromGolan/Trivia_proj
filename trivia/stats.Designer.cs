@@ -39,6 +39,7 @@ namespace trivia
             this.ustats.Name = "ustats";
             this.ustats.Size = new System.Drawing.Size(148, 26);
             this.ustats.TabIndex = 0;
+            this.ustats.TextChanged += new System.EventHandler(this.ustats_TextChanged);
             // 
             // exit
             // 

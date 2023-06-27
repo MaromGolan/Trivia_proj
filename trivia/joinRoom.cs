@@ -27,8 +27,6 @@ namespace trivia
             {
                 DateTime startTime = DateTime.UtcNow;
                 TimeSpan breakDuration = TimeSpan.FromSeconds(3);
-
-                // option 1
                 while (DateTime.UtcNow - startTime < breakDuration)
                 {
                     foreach (room r in rooms)
@@ -42,7 +40,6 @@ namespace trivia
                 }
                 tojoin_Click(sender, e);
             }
-
         }
         private void tojoin_Click(object sender, EventArgs e)
         {
@@ -72,5 +69,9 @@ namespace trivia
 
         }
 
+        private void tojoin_Click_1(object sender, EventArgs e)
+        {
+
+        }
     }
 }
