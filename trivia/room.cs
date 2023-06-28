@@ -14,20 +14,13 @@ namespace trivia
         public user[] ingame;
         public bool started;
 
-        public room(string n, int t, int num, string u, List<user> users)
+        public room(string n, int t, int num, user u)
         {
             this.RoomName = n;
             this.TimePerQuestion = t;
             this.NumberOfPlayers = num;
             this.ingame = new user[NumberOfPlayers];
-            foreach(var i in users)
-            {
-                if(String.Equals(i.Username,u))
-                {
-                    ingame[0] = i;
-                    break;
-                }
-            }
+            ingame[0] = u;
             started = false;
         }
         public void AddUser(user u)

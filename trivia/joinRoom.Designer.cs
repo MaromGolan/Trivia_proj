@@ -29,13 +29,14 @@ namespace trivia
         {
             this.currrooms = new System.Windows.Forms.Panel();
             this.tojoin = new System.Windows.Forms.Button();
+            this.a = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // currrooms
             // 
-            this.currrooms.Location = new System.Drawing.Point(172, 76);
+            this.currrooms.Location = new System.Drawing.Point(142, 77);
             this.currrooms.Name = "currrooms";
-            this.currrooms.Size = new System.Drawing.Size(222, 149);
+            this.currrooms.Size = new System.Drawing.Size(286, 210);
             this.currrooms.TabIndex = 0;
             // 
             // tojoin
@@ -46,16 +47,26 @@ namespace trivia
             this.tojoin.TabIndex = 1;
             this.tojoin.Text = "Join";
             this.tojoin.UseVisualStyleBackColor = true;
-            this.tojoin.Click += new System.EventHandler(this.tojoin_Click_1);
+            this.tojoin.Click += new System.EventHandler(this.tojoin_Click);
+            // 
+            // a
+            // 
+            this.a.Location = new System.Drawing.Point(142, 42);
+            this.a.Name = "a";
+            this.a.Size = new System.Drawing.Size(86, 20);
+            this.a.TabIndex = 2;
+            this.a.Text = "Avaliable Rooms:";
             // 
             // joinRoom
             // 
             this.ClientSize = new System.Drawing.Size(625, 419);
+            this.Controls.Add(this.a);
             this.Controls.Add(this.tojoin);
             this.Controls.Add(this.currrooms);
             this.Name = "joinRoom";
-            this.Load += new System.EventHandler(this.joinRoom_Load_2);
+            this.Load += new System.EventHandler(this.joinRoom_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -63,5 +74,6 @@ namespace trivia
         private System.Windows.Forms.ListBox roomlist;
         private System.Windows.Forms.Panel currrooms;
         private System.Windows.Forms.Button tojoin;
+        private System.Windows.Forms.TextBox a;
     }
 }

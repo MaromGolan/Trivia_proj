@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace trivia
 {
@@ -15,13 +19,13 @@ namespace trivia
         public string Username { get; private set; }
         public string Password { get; private set; }
         public string Email { get; private set; }
-
+        TcpClient usersock;
 
         public List<user> users;
-        public signup(List<user> u)
+        public signup(TcpClient usock)
         {
             InitializeComponent();
-            users = u;
+            usersock = usock;
         }
 
         private void sb_Click(object sender, EventArgs e)
@@ -34,7 +38,7 @@ namespace trivia
                 {
                     Username = username;
                     DialogResult = DialogResult.OK;
-                    Close();
+                    break;
                 }
                 else
                 {
@@ -49,7 +53,7 @@ namespace trivia
                 {
                     Password = password;
                     DialogResult = DialogResult.OK;
-                    Close();
+                    break;
                 }
                 else
                 {
@@ -64,17 +68,18 @@ namespace trivia
                 {
                     Email = email;
                     DialogResult = DialogResult.OK;
-                    Close();
+                    break;
                 }
                 else
                 {
                     MessageBox.Show("Please enter an email.");
                 }
             }
-            //SQLiteCommand insertSQL = new SQLiteCommand("INSERT INTO Users(username,password,email) Values (username,password,email);",dbvar);
-            user u = new user(username, password, email);
-            this.users.Add(u);
-
+            Message message = new Message(2, "," + username + "," + password + "," + email);
+            string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+            NetworkStream stream = usersock.GetStream();
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+            stream.Write(data, 0, data.Length);
         }
         private void un_TextChanged(object sender, EventArgs e)
         {

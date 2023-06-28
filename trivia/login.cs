@@ -7,6 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace trivia
 {
@@ -14,12 +18,12 @@ namespace trivia
     {
         public string Username { get; private set; }
         public string Password { get; private set; }
+        TcpClient usersock;
 
-        List<user> users;
-        public login(List<user> u)
+        public login(TcpClient usersock)
         {
             InitializeComponent();
-            users = u;
+            this.usersock = usersock;
         }
 
         private void lb_Click(object sender, EventArgs e)
@@ -32,7 +36,7 @@ namespace trivia
                 {
                     Username = username;
                     DialogResult = DialogResult.OK;
-                    Close();
+                    break;    
                 }
                 else
                 {
@@ -47,18 +51,20 @@ namespace trivia
                 {
                     Password = password;
                     DialogResult = DialogResult.OK;
-                    Close();
+                    break;
                 }
                 else
                 {
                     MessageBox.Show("Please enter a Password");
                 }
             }
-            //if(getfromdbthepasswordandcheck);
-            user u = new user();
-            u.Username = username;
-            u.Password = password;
-            users.Add(u);
+            Message message = new Message(1, "," + username + "," + password);
+            string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+            NetworkStream stream = usersock.GetStream();
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+            stream.Write(data, 0, data.Length);
+            Close();
+             
         }
         private void login_Load(object sender, EventArgs e)
         {

@@ -10,23 +10,136 @@ using System.Windows.Forms;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Net;
-            
+using Newtonsoft.Json;
+
 namespace trivia
 {
     public partial class triviaCreate : Form
     {
         private string currentPlayer;
         private string currentRoom;
-        public List<user> users;
         public List<room> rooms;
+        public List<user> users;
+        user user;
         TcpClient usersock;
         public triviaCreate()
         {
             InitializeComponent();
-            this.users = new List<user>();
-            this.rooms = new List<room>();
             currentPlayer = String.Empty;
-            try
+            buttonChanger(false);
+            string serverIP = "127.0.0.1";
+            int serverPort = 8826;
+            usersock = new TcpClient();
+            usersock.Connect(serverIP, serverPort);
+        }
+
+
+        private void TriviaGameForm_Load(object sender, EventArgs e)
+        {
+            
+        }
+        private void signupButton_Click(object sender, EventArgs e)
+        {
+            if (String.Equals(this.currentPlayer, String.Empty))
+            { 
+                signup signup = new signup(this.usersock);
+                signup.ShowDialog();
+                currentPlayer = signup.Username;
+                user = new user(currentPlayer, signup.Password, signup.Email);
+                buttonChanger(true);
+            }
+        }
+        private void loginButton_Click(object sender, EventArgs e)
+        {
+            if (String.Equals(this.currentPlayer, String.Empty))
+            {
+                login login = new login(this.usersock);
+                login.ShowDialog();
+                currentPlayer = login.Username;
+                user = new user(currentPlayer, login.Password, "dmiga@gmail.com");
+                buttonChanger(true);
+            }
+        }
+
+        private void createRoomButton_Click(object sender, EventArgs e)
+        {
+            createRoom createRoomForm = new createRoom(usersock,user);
+            if (createRoomForm.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show($"Room created:\nName: {createRoomForm.r.RoomName}\nTime per question: {createRoomForm.r.TimePerQuestion} seconds\nNumber of players: {createRoomForm.r.NumberOfPlayers}\n\nPlayer: {currentPlayer}");
+                Rooms newroom = new Rooms(createRoomForm.r,usersock);
+                newroom.Show();
+            }
+        }
+
+        private void joinRoomButton_Click(object sender, EventArgs e)
+        {
+            joinRoom joinRoom = new joinRoom(this.usersock);
+            if (joinRoom.ShowDialog() == DialogResult.OK)
+            {
+                currentRoom = joinRoom.SelectedRoom;
+                MessageBox.Show($"Joined Room:\nRoom: {currentRoom}\n\nPlayer: {currentPlayer}");
+                foreach(room r in rooms)
+                {
+                    if (String.Equals(r.RoomName, currentRoom))
+                    {
+                        Rooms newroom = new Rooms(r,usersock);
+                        break;
+                    }
+                }
+
+            }
+        }
+
+        private void statisticsButton_Click(object sender, EventArgs e)
+        {
+            stats ustats = new stats(usersock);
+            ustats.Show();
+        }
+
+        private void exitButton_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void triviaCreate_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void top3stats_Click(object sender, EventArgs e)
+        {
+            highestScores h = new highestScores();
+            h.Show();
+        }
+
+        private void exitButton_Click_1(object sender, EventArgs e)
+        {
+            Application.Exit();
+
+        }
+
+        private void buttonChanger(bool t)
+        {
+            createRoomButton.Visible = t;
+            top3stats.Visible = t;
+            joinRoomButton.Visible = t;
+            statisticsButton.Visible = t;
+            top3stats.Enabled = t;
+            statisticsButton.Enabled = t;
+            joinRoomButton.Enabled = t;
+            createRoomButton.Enabled = t;
+            SignunButton.Enabled = !t;
+            SignunButton.Visible= !t;
+            loginButton.Enabled = !t;
+            loginButton.Visible = !t;
+
+        }
+    }
+    
+}
+
+/*try
             {
                 string serverIP = "127.0.0.1"; 
                 int serverPort = 8826;
@@ -36,7 +149,7 @@ namespace trivia
 
                 if (usersock.Connected)
                 {
-                    Console.WriteLine("Connected to the server.");
+                
 
                     NetworkStream stream = usersock.GetStream();
 
@@ -63,91 +176,4 @@ namespace trivia
             {
                 Console.WriteLine("An error occurred: " + ex.Message);
             }
-        }
-    
-
-        private void TriviaGameForm_Load(object sender, EventArgs e)
-        {
-            
-        }
-        private void signupButton_Click(object sender, EventArgs e)
-        {
-            signup signup = new signup(users);
-            signup.ShowDialog();
-            currentPlayer = signup.Username;   
-        }
-
-        private void loginButton_Click(object sender, EventArgs e)
-        {
-            login login = new login(users);
-            login.ShowDialog();
-            currentPlayer = login.Username;
-        }
-
-        private void createRoomButton_Click(object sender, EventArgs e)
-        {
-            createRoom createRoomForm = new createRoom(users);
-            if (createRoomForm.ShowDialog() == DialogResult.OK)
-            {
-                string roomName = createRoomForm.r.RoomName;
-                int timePerQuestion = createRoomForm.r.TimePerQuestion;
-                int numberOfPlayers = createRoomForm.r.NumberOfPlayers;
-                rooms.Add(createRoomForm.r);
-                currentRoom = roomName;
-                MessageBox.Show($"Room created:\nName: {roomName}\nTime per question: {timePerQuestion} seconds\nNumber of players: {numberOfPlayers}\n\nPlayer: {currentPlayer}");
-                Rooms newroom = new Rooms(createRoomForm.r);
-                newroom.Show();
-            }
-        }
-
-        private void joinRoomButton_Click(object sender, EventArgs e)
-        {
-            joinRoom joinRoom = new joinRoom(rooms);
-            if (joinRoom.ShowDialog() == DialogResult.OK)
-            {
-                currentRoom = joinRoom.SelectedRoom;
-                MessageBox.Show($"Joined Room:\nRoom: {currentRoom}\n\nPlayer: {currentPlayer}");
-                foreach(room r in rooms)
-                {
-                    if (String.Equals(r.RoomName, currentRoom))
-                    {
-                        Rooms newroom = new Rooms(r);
-                        break;
-                    }
-                }
-
-            }
-        }
-
-        private void statisticsButton_Click(object sender, EventArgs e)
-        {
-            stats ustats = new stats();
-            ustats.Show();
-        }
-
-        private void exitButton_Click(object sender, EventArgs e)
-        {
-            Application.Exit();
-        }
-
-        private void triviaCreate_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void top3stats_Click(object sender, EventArgs e)
-        {
-            highestScores h = new highestScores();
-            h.Show();
-        }
-
-        private void exitButton_Click_1(object sender, EventArgs e)
-        {
-            Application.Exit();
-
-        }
-
-        
-    }
-
-}
+*/

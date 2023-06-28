@@ -36,12 +36,11 @@ namespace trivia
             this.num = new System.Windows.Forms.TextBox();
             this.time = new System.Windows.Forms.TextBox();
             this.room = new System.Windows.Forms.TextBox();
-            this.cn = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Create
             // 
-            this.Create.Location = new System.Drawing.Point(311, 294);
+            this.Create.Location = new System.Drawing.Point(311, 245);
             this.Create.Name = "Create";
             this.Create.Size = new System.Drawing.Size(130, 23);
             this.Create.TabIndex = 0;
@@ -75,22 +74,12 @@ namespace trivia
             this.room.Text = "Room Name";
             this.room.TextChanged += new System.EventHandler(this.textBox1_TextChanged_1);
             // 
-            // cn
-            // 
-            this.cn.Location = new System.Drawing.Point(311, 248);
-            this.cn.Name = "cn";
-            this.cn.Size = new System.Drawing.Size(130, 20);
-            this.cn.TabIndex = 5;
-            this.cn.Text = "Admin Username";
-            this.cn.TextChanged += new System.EventHandler(this.textBox1_TextChanged_2);
-            // 
             // createRoom
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveCaption;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.cn);
             this.Controls.Add(this.room);
             this.Controls.Add(this.time);
             this.Controls.Add(this.num);
@@ -110,6 +99,5 @@ namespace trivia
         private System.Windows.Forms.TextBox num;
         private System.Windows.Forms.TextBox time;
         private System.Windows.Forms.TextBox room;
-        private System.Windows.Forms.TextBox cn;
     }
 }

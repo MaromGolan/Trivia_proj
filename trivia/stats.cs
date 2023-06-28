@@ -1,68 +1,39 @@
 ﻿using System;
 using System.Windows.Forms;
-//using System.Data.SQLite;
+using System.Net.Http;
+using System.Net.Sockets;
+using System.Net;
+using Newtonsoft.Json;
+
 namespace trivia
 {
     public partial class stats : Form
     {
-        public stats()
+        TcpClient usersocket;
+        public stats(TcpClient usock)
         {
             InitializeComponent();
+            usersocket = usock;
         }
-
-        private void statisticsButton_Click(object sender, EventArgs e)
-        {
-            //getting the stats from the db
-            /*string username = "JohnDoe";
-
-            string connectionString = "Data Source=STATISTICS.db;Version=3;";
-
-            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
-            {
-                connection.Open();
-
-                string query = "SELECT CORRECT_ANSWERS, WRONG_ANSWERS FROM USERS WHERE USERNAME = @Username";
-
-                using (SQLiteCommand command = new SQLiteCommand(query, connection))
-                {
-                    command.Parameters.AddWithValue("@Username", username);
-
-                    using (SQLiteDataReader reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            int correctAnswers = reader.GetInt32(0);
-                            int wrongAnswers = reader.GetInt32(1);
-
-                            Console.WriteLine("Correct Answers: " + correctAnswers);
-                            Console.WriteLine("Wrong Answers: " + wrongAnswers);
-                        }
-                        else
-                        {
-                            Console.WriteLine("User not found.");
-                        }
-                    }
-                }
-
-                connection.Close();
-            }
-            */
-            //getting stats from the database with the connection to cpp
-            highestScores highScoresForm = new highestScores();
-            highScoresForm.ShowDialog();
-            //DB.GetSTATSOFUSER
-        }
-
         private void stats_Load(object sender, EventArgs e)
         {
-            ustats.Text = "stats from server";
+            Message m = new Message(7, "getuserstats");
+            string JSONmessage = JsonConvert.SerializeObject(m, Formatting.Indented);
+            NetworkStream stream = usersocket.GetStream();
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+            stream.Write(data, 0, data.Length);
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            string response = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            Message JSONresponse = JsonConvert.DeserializeObject<Message>(response);
+            textBox1.Text = JSONresponse.message;
         }
         private void exit_Click(object sender, EventArgs e)
         {
             Close();
         }
 
-        private void ustats_TextChanged(object sender, EventArgs e)
+        private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
         }

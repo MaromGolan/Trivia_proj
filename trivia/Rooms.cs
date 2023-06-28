@@ -7,7 +7,8 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Newtonsoft.Json;
+using System.Net;
 namespace trivia
 {//TO ADD A START BUTTON TO FOR THE ADMIN THAT MOVES HIM TO THIS PAGE, AND A PROMPT THAT WHEN PRESSING YES MOVES THE USER TO THIS PAGE
     public partial class Rooms : Form
@@ -21,9 +22,13 @@ namespace trivia
         public string thisuser { get; set; }
         static public bool started { get; set; }
         static public user[] ingame { get; set; }
-        
+        TcpClient usersocket;
+        int correct;
+        int totaltime;
 
-        public Rooms(room r)
+
+
+        public Rooms(room r,TcpClient usock)
         {
             InitializeComponent();
             this.questions = new List<Question>();
@@ -34,8 +39,45 @@ namespace trivia
             this.admin = r.ingame[0].Username;
             this.thisuser = r.ingame[r.ingame.Length-1].Username;
             started = false;
+            usersocket = usock;
+            correct = 0;
+            totaltime = 0;
+            numQuestion = 0;
         }
-
+        private void GameStarter()
+        {
+            if (thisuser == admin)
+            {
+                NetworkStream stream = usersocket.GetStream();
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                string response;
+                Task wait = QuestionSetter();
+                for (int i = 10; i > 0; i--)
+                {
+                    string JSONmessage = JsonConvert.SerializeObject(questions[i], Formatting.Indented);
+                    stream = usersocket.GetStream();
+                    byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+                    stream.Write(data, 0, data.Length);
+                }
+                MessageBox.Show("Game is Starting");
+            }
+            else
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    NetworkStream stream = usersocket.GetStream();
+                    byte[] buffer = new byte[1024];
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string response = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    questions.Add(JsonConvert.DeserializeObject<Question>(response));
+                }
+                MessageBox.Show("Game is Starting");
+            }
+            nextButton.Enabled = true;
+            nextButton.Visible = true;
+            DisplayQuestion();
+        }
         private void Rooms_Load(object sender, EventArgs e)
         {
             if (thisuser == admin)
@@ -48,13 +90,15 @@ namespace trivia
             answerOptionsPanel.Visible = false;
             while (!started)
             {
-                //waiting for admin to start
-                //waiting to get started from the server  
+                NetworkStream stream = usersocket.GetStream();
+                byte[] buffer = new byte[1024];
+                int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                string response = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                Message JSONresponse = JsonConvert.DeserializeObject<Message>(response);
+                if (String.Equals(JSONresponse.message, "started"))
+                    started = true;
             }
-            //call for question setter and send the request to server
-            nextButton.Enabled = true;
-            nextButton.Visible = true;
-            DisplayQuestion(sender, e);
+            GameStarter();
         }
 
         public async Task<string> GetChatCompletion(string apiKey, string query)//i got chatgpt to give me a random question each time
@@ -108,7 +152,45 @@ namespace trivia
                 questions.Add(q);
             }
         }
-        private void DisplayQuestion(object sender, EventArgs e)
+        private void gameEnded()
+        {
+            MessageBox.Show("Game Over! Winner will be shown when everyone finishes!");
+            Message message = new Message(17, "user finished game");
+            string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+            NetworkStream stream = usersocket.GetStream();
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+            stream.Write(data, 0, data.Length);
+
+            byte[] buffer = new byte[1024];
+            int bytesRead = stream.Read(buffer, 0, buffer.Length);
+            string response = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            Message JSONresponse = JsonConvert.DeserializeObject<Message>(response);
+            MessageBox.Show("The Winner Is: " + JSONresponse.message);
+            if (thisuser == admin)
+            {
+                nextButton.Enabled = true;
+                nextButton.Visible = true;
+                nextButton.Text = "Start";
+            }
+            else
+            {
+                nextButton.Enabled = false;
+                nextButton.Visible = false;
+            }
+            buffer = new byte[1024];
+            bytesRead = stream.Read(buffer, 0, buffer.Length);
+            response = System.Text.Encoding.ASCII.GetString(buffer, 0, bytesRead);
+            JSONresponse = JsonConvert.DeserializeObject<Message>(response);
+            if (String.Equals(JSONresponse.message, "start"))
+            {
+                GameStarter();
+            }
+            else if (String.Equals(JSONresponse.message, "admin left"))
+            {
+                MessageBox.Show("Admin has left please press exit");
+            }
+        }
+        private void DisplayQuestion()
         {
             if (numQuestion < 10)
             {
@@ -116,19 +198,13 @@ namespace trivia
                 // Update the question label
                 DateTime startTime = DateTime.UtcNow;
                 TimeSpan breakDuration = TimeSpan.FromSeconds(this.time);
-
-                // option 1
+                nextButton.Enabled = true;
+                nextButton.Visible = true;
                 while (DateTime.UtcNow - startTime < breakDuration)
                 {
-                    // do some work
-
                     Question currentQuestion = questions[numQuestion];
-                    questionLabel.Text = currentQuestion.Text;
-
-                    // Clear any previous answer options
+                    questionLabel.Text = currentQuestion.question;
                     answerOptionsPanel.Controls.Clear();
-
-                    // Create and add radio buttons for each answer option
                     foreach (string option in currentQuestion.AnswerOptions)
                     {
                         RadioButton radioButton = new RadioButton();
@@ -137,18 +213,13 @@ namespace trivia
                         radioButton.Font = new Font("Arial", 12);
                         answerOptionsPanel.Controls.Add(radioButton);
                     }
-                    // Enable the next button
-                    nextButton.Enabled = true;
-                    nextButton.Visible = true;
+                    totaltime += (int)(DateTime.UtcNow - startTime).TotalSeconds;
                 }
-                MessageBox.Show("times up");
-                nextButton_Click(sender, e); 
+                MessageBox.Show("times up, Please Press Next");
             }
             else
             {
-                // No more questions, game over
-                MessageBox.Show("Game Over!");
-                Close();
+                gameEnded();
             }
         }
         private void nextButton_Click(object sender, EventArgs e)
@@ -166,6 +237,7 @@ namespace trivia
                     {
                         // Correct answer
                         MessageBox.Show("Correct!");
+                        correct++;
                     }
                     else
                     {
@@ -176,22 +248,48 @@ namespace trivia
                 else
                 {
                     MessageBox.Show($"Incorrect! The correct answer is: {currentQuestion.CorrectAnswer}");
-                    return;
                 }
 
                 // Move to the next question
                 numQuestion++;
-                DisplayQuestion(sender, e);
+                NetworkStream stream = usersocket.GetStream();
+                Message message = new Message(16, questions[numQuestion].question + "," + correct + "," + (numQuestion - correct) + "," + totaltime/numQuestion);
+                string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+                stream.Write(data, 0, data.Length);
+
+                DisplayQuestion();
             }
             else
             {
                 started = true;
                 nextButton.Text = "next";
-                DisplayQuestion(sender, e);
+                NetworkStream stream = usersocket.GetStream();
+                Message message = new Message(11, "start");
+                string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+                stream.Write(data, 0, data.Length);
+                DisplayQuestion();
             }
         }
         private void exit_Click(object sender, EventArgs e)
         {
+            if (thisuser == admin)
+            {
+                NetworkStream stream = usersocket.GetStream();
+                Message message = new Message(10, "admin left");
+                string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+                stream.Write(data, 0, data.Length);
+            }
+            else
+            {
+                NetworkStream stream = usersocket.GetStream();
+                Message message = new Message(13, "user left");
+                string JSONmessage = JsonConvert.SerializeObject(message, Formatting.Indented);
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(JSONmessage);
+                stream.Write(data, 0, data.Length);
+            }
             MessageBox.Show("Leaving room");
             Close();
         }
@@ -208,13 +306,13 @@ namespace trivia
     }
     public class Question
     {
-        public string Text { get; }
+        public string question { get; }
         public List<string> AnswerOptions { get; }
         public string CorrectAnswer { get; }
 
-        public Question(string text, List<string> answerOptions, string correctAnswer)
+        public Question(string question, List<string> answerOptions, string correctAnswer)
         {
-            Text = text;
+            this.question = question;
             AnswerOptions = answerOptions;
             CorrectAnswer = correctAnswer;
         }
