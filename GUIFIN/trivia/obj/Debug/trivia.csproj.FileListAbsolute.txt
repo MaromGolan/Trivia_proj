@@ -1,0 +1,41 @@
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.csproj.AssemblyReference.cache
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.Properties.Resources.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.csproj.GenerateResource.cache
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.createRoom.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.joinRoom.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.login.resources
+C:\Users\user\source\repos\trivia\trivia\obj\Debug\trivia.signup.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.csproj.AssemblyReference.cache
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.csproj.SuggestedBindingRedirects.cache
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.createRoom.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.highestScores.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.joinRoom.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.login.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.Properties.Resources.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.Rooms.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.signup.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.stats.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.triviaCreate.resources
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.csproj.GenerateResource.cache
+C:\Users\test0\OneDrive\שולחן העבודה\trivia\trivia2023\trivia\obj\Debug\trivia.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.createRoom.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.highestScores.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.joinRoom.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.login.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.Properties.Resources.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.Rooms.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.signup.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.stats.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.triviaCreate.resources
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.csproj.GenerateResource.cache
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\trivia2023\trivia\bin\Debug\trivia.exe.config
+C:\Users\user\Desktop\trivia2023\trivia\bin\Debug\trivia.exe
+C:\Users\user\Desktop\trivia2023\trivia\bin\Debug\trivia.pdb
+C:\Users\user\Desktop\trivia2023\trivia\bin\Debug\Newtonsoft.Json.dll
+C:\Users\user\Desktop\trivia2023\trivia\bin\Debug\Newtonsoft.Json.xml
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.csproj.CopyComplete
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.exe
+C:\Users\user\Desktop\trivia2023\trivia\obj\Debug\trivia.pdb

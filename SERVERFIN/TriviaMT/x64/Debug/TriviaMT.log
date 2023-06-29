@@ -1,0 +1,18 @@
+﻿  LoginRequestHandler.cpp
+  MenuRequestHandler.cpp
+  RequestHandlerFactory.cpp
+  GameRequestHandler.cpp
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\User.h(6,1): error C2011: 'User': 'class' type redefinition
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\User.h(5,7): message : see declaration of 'User'
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(7,21): error C2027: use of undefined type 'User'
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\User.h(5,7): message : see declaration of 'User'
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(8,1): error C2027: use of undefined type 'User'
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\User.h(5,7): message : see declaration of 'User'
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(17,2): warning C4150: deletion of pointer to incomplete type 'User'; no destructor called
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\User.h(5,7): message : see declaration of 'User'
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(26,10): error C3861: 'GetQuestionRequest': identifier not found
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(33,10): error C3861: 'SubmitAnswerRequest': identifier not found
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(38,10): error C3861: 'GetGameResultRequest': identifier not found
+C:\Users\אריק\source\repos\trivia2023-1.0.1\fin\TriviaMT\GameRequestHandler.cpp(43,10): error C3861: 'LeaveGameRequest': identifier not found
+  SqliteDataBase.cpp
+  Generating Code...
